@@ -1,55 +1,75 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import boto3
 import json
 
+# ---------------------------
+# FastAPI app setup
+# ---------------------------
 app = FastAPI()
 
+# Allow frontend (localhost:5173) to call backend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # for development, allow all
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ---------------------------
+# Bedrock client setup
+# ---------------------------
 client = boto3.client(
-    service_name="bedrock-runtime",
+    "bedrock-runtime",
     region_name="us-east-1"
 )
 
+# ---------------------------
+# Request model
+# ---------------------------
 class CodeRequest(BaseModel):
     code: str
     level: str
     context: str
 
+# ---------------------------
+# POST endpoint
+# ---------------------------
 @app.post("/explain")
 async def explain_code(request: CodeRequest):
 
     prompt = f"""
-    Explain the following code in a {request.level} level.
-    Use {request.context} style explanation.
-    Convert explanation into a story format.
+Explain the following code in a {request.level} level.
+Use {request.context} style explanation.
+Convert explanation into a story format.
 
-    Code:
-    {request.code}
-    """
+Code:
+{request.code}
+"""
 
-    body = {
-        "anthropic_version": "bedrock-2023-05-31",
-        "max_tokens": 800,
-        "messages": [
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": prompt
-                    }
-                ]
+    try:
+        response = client.converse(
+            modelId="amazon.nova-lite-v1:0",
+            messages=[
+                {
+                    "role": "user",
+                    "content": [
+                        {"text": prompt}
+                    ]
+                }
+            ],
+            inferenceConfig={
+                "maxTokens": 800,
+                "temperature": 0.7
             }
-        ]
-    }
+        )
 
-    response = client.invoke_model(
-        modelId="anthropic.claude-3-haiku-20240307-v1:0",
-        body=json.dumps(body)
-    )
+        return {
+            "explanation": response["output"]["message"]["content"][0]["text"]
+        }
 
-    result = json.loads(response["body"].read())
-
-    return {
-        "explanation": result["content"][0]["text"]
-    }
+    except Exception as e:
+        print("Bedrock error:", e)
+        return {"error": str(e)}
