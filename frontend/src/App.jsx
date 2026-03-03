@@ -22,40 +22,48 @@ function App() {
   }, [messages, loading]);
 
   const handleSubmit = async () => {
-    if (!code.trim() || loading) return;
+  if (!code.trim() || loading) return;
 
-    const userMessage = { role: "user", content: code };
-    setMessages((prev) => [...prev, userMessage]);
-    setCode("");
-    setLoading(true);
+  const userMessage = { role: "user", content: code };
+  setMessages((prev) => [...prev, userMessage]);
+  setLoading(true);
 
-    try {
-      const response = await fetch("https://ai-bharat-5q4q.onrender.com", {
+  try {
+    const response = await fetch(
+      "https://ai-bharat-5q4q.onrender.com/explain",
+      {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-  code: code,
-  level: "Beginner",
-  context: "Simple"
-})
-      });
+          code: code,
+          level: "beginner",
+          context: "simple"
+        })
+      }
+    );
 
-      const data = await response.json();
+    const data = await response.json();
 
-      setMessages((prev) => [
-        ...prev,
-        { role: "ai", content: data.explanation || "Something went wrong." }
-      ]);
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        { role: "ai", content: "Server error." }
-      ]);
-    }
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "ai",
+        content: data.explanation || "Something went wrong."
+      }
+    ]);
+  } catch (error) {
+    console.error("Error:", error);
+    setMessages((prev) => [
+      ...prev,
+      { role: "ai", content: "Server error." }
+    ]);
+  }
 
-    setLoading(false);
-  };
-
+  setLoading(false);
+  setCode("");
+};
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
   };
