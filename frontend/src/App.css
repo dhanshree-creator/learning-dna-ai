@@ -1,172 +1,328 @@
-/* ===============================
-   GLOBAL STYLE (Storybook Theme)
-================================ */
+/* ================= Global Styles ================= */
+* {
+  transition: background 0.4s ease, 
+              color 0.4s ease, 
+              border 0.4s ease;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+}
 
 body {
-  margin: 0;
-  font-family: "Georgia", "Times New Roman", serif;
-  background: linear-gradient(90deg,#f4efe6,#fdfaf3);
-  color: #2e2e2e;
+  overflow: hidden; /* prevent body scroll */
 }
 
-/* ===============================
-   CHAT AREA (BOOK PAGE)
-================================ */
-
-.chat-container {
-  max-width: 900px;
-  margin: auto;
-  padding: 40px;
-}
-
-.chat-window {
-  background: #fffdf6;
-  border-radius: 12px;
-  padding: 50px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  border: 1px solid #ece6d8;
-}
-
-/* ===============================
-   AI MESSAGE (STORY TEXT)
-================================ */
-
-.ai-message {
-  font-size: 18px;
-  line-height: 1.8;
-  margin-bottom: 28px;
-  padding-left: 18px;
-  border-left: 3px solid #d6c8a7;
-  animation: fadeIn 0.3s ease;
-}
-
-.ai-message::before {
-  content: "✦ Story";
-  display: block;
-  font-size: 12px;
-  color: #a89a7a;
-  margin-bottom: 6px;
-  letter-spacing: 1px;
-}
-
-/* ===============================
-   USER MESSAGE (MARGIN NOTE)
-================================ */
-
-.user-message {
-  background: #fff8e8;
-  border: 1px solid #f0e3c7;
-  padding: 14px 18px;
-  border-radius: 8px;
-  font-size: 15px;
-  margin-bottom: 20px;
-  width: fit-content;
-  max-width: 60%;
-  margin-left: auto;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
-}
-
-.user-message::before {
-  content: "📝 You";
-  display: block;
-  font-size: 12px;
-  color: #9a8c6d;
-  margin-bottom: 5px;
-}
-
-/* ===============================
-   INPUT AREA
-================================ */
-
-.input-container {
-  margin-top: 30px;
+/* ================= App Container ================= */
+.app {
   display: flex;
-  gap: 10px;
+  height: calc(var(--vh, 1vh) * 100); /* true fullscreen for mobile */
+  width: 100vw;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  background-attachment: fixed;
 }
 
-.input-box {
-  flex: 1;
-  padding: 14px;
-  border-radius: 8px;
-  border: 1px solid #e2d8bf;
-  background: #fffdf6;
-  font-size: 15px;
+/* ================= Dark / Light Mode ================= */
+.dark {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #1e1b4b 100%);
+  color: #f1f5f9;
 }
 
-.input-box:focus {
-  outline: none;
-  border-color: #c5b79a;
+.light {
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f1f5f9 100%);
+  color: #1e293b;
 }
 
-/* ===============================
-   SEND BUTTON
-================================ */
-
-.send-button {
-  padding: 12px 20px;
-  border-radius: 8px;
-  border: none;
-  background: #8b6f47;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.send-button:hover {
-  background: #6f5635;
-}
-
-/* ===============================
-   SIDEBAR (KEEP FEATURES SAME)
-================================ */
-
+/* ================= Sidebar ================= */
 .sidebar {
-  background: #2b2b2b;
-  color: #fff;
-  width: 260px;
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 30px;
+  min-width: 250px;
+  max-width: 300px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+.dark .sidebar {
+  background: #0f172a;
+}
+
+.light .sidebar {
+  background: #ffffff;
+  border-right: 1px solid #e2e8f0;
 }
 
 .sidebar h2 {
-  font-size: 18px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #3b82f6, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.sidebar-item {
-  padding: 10px 12px;
-  border-radius: 6px;
-  margin-bottom: 8px;
+.sidebar button {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid transparent;
   cursor: pointer;
+  margin-bottom: 25px;
+  transition: all 0.2s ease;
 }
 
-.sidebar-item:hover {
-  background: #3c3c3c;
+.dark .sidebar button {
+  background: #334155;
+  color: white;
+  border: 1px solid #475569;
 }
 
-/* ===============================
-   STORY TITLE
-================================ */
+.dark .sidebar button:hover {
+  background: #475569;
+}
 
-.story-title {
-  font-size: 26px;
-  font-weight: bold;
+.light .sidebar button {
+  background: #f1f5f9;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
+}
+
+.light .sidebar button:hover {
+  background: #e2e8f0;
+}
+
+/* Usage Box */
+.usage {
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.dark .usage {
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+.light .usage {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+/* ================= Main ================= */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+  min-height: 0; /* fixes flex scroll issue */
+}
+
+/* Chat Area */
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+  min-height: 0; /* fixes flex scroll issue */
+}
+
+/* Messages */
+.message-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
   margin-bottom: 20px;
-  text-align: center;
-  color: #5a4b32;
 }
 
-/* ===============================
-   ANIMATION
-================================ */
+.message-wrapper.user {
+  justify-content: flex-end;
+}
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
+.message {
+  max-width: 75%;
+  padding: 16px;
+  border-radius: 14px;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.user {
+  margin-left: auto;
+}
+
+.dark .user {
+  background: #2563eb;
+  color: white;
+  border: 1px solid #1d4ed8;
+}
+
+.light .user {
+  background: #3b82f6;
+  color: white;
+  border: 1px solid #2563eb;
+}
+
+.bot {
+  margin-right: auto;
+}
+
+.dark .bot {
+  background: #0f172a;
+  border: 1px solid #334155;
+}
+
+.light .bot {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+/* Code block wrapper */
+.code-block {
+  position: relative;
+}
+
+/* ================= Input Area ================= */
+.input-area {
+  display: flex;
+  padding: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.dark .input-area {
+  background: #0f172a;
+  border-top: 1px solid #334155;
+}
+
+.light .input-area {
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+}
+
+textarea {
+  flex: 1;
+  resize: none;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
+}
+
+.dark textarea {
+  background: #1e293b;
+  color: white;
+  border: 1px solid #334155;
+}
+
+.light textarea {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+}
+
+textarea:focus {
+  border-color: #3b82f6;
+}
+
+/* Generate Button */
+.input-area button {
+  margin-left: 12px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.dark .input-area button {
+  background: #3b82f6;
+  color: white;
+}
+
+.dark .input-area button:hover {
+  background: #2563eb;
+}
+
+.light .input-area button {
+  background: #2563eb;
+  color: white;
+}
+
+.light .input-area button:hover {
+  background: #1d4ed8;
+}
+
+/* ================= Logo Section ================= */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.logo-circle {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  font-size: 14px;
+}
+
+.subtitle {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+/* Avatar */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+/* ================= Responsive ================= */
+@media (max-width: 1024px) {
+  .app {
+    flex-direction: column; /* stack sidebar + main vertically */
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  .sidebar {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+  }
+  .main {
+    width: 100%;
+    flex: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  .chat-area {
+    padding: 1rem;
   }
 }
