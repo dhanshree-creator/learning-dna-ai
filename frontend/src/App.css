@@ -1,143 +1,112 @@
-/* ================= Global Styles ================= */
-* {
-  transition: background 0.4s ease, 
-              color 0.4s ease, 
-              border 0.4s ease;
-  box-sizing: border-box;
-}
+/* =============================
+GLOBAL
+============================= */
 
-html, body, #root {
-  height: 100%;
-  width: 100%;
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
   font-family: "Inter", sans-serif;
 }
 
-body {
-  overflow: hidden; /* prevent body scroll */
-}
-
-/* ================= App Container ================= */
 .app {
   display: flex;
-  height: calc(var(--vh, 1vh) * 100); /* true fullscreen for mobile */
-  width: 100vw;
-  overflow: hidden;
-  transition: all 0.4s ease;
-  background-attachment: fixed;
+  height: 100vh;
 }
 
-/* ================= Dark / Light Mode ================= */
-.dark {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #1e1b4b 100%);
-  color: #f1f5f9;
+/* =============================
+DARK / LIGHT MODE
+============================= */
+
+.app.dark {
+  background: radial-gradient(circle at top, #0b1f5c, #050a24);
+  color: white;
 }
 
-.light {
-  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f1f5f9 100%);
-  color: #1e293b;
+.app.light {
+  background: #f5f6fa;
+  color: #111;
 }
 
-/* ================= Sidebar ================= */
+/* =============================
+SIDEBAR
+============================= */
+
 .sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, #0d1b4f, #050a24);
+  padding: 25px;
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
-  padding: 30px;
-  min-width: 250px;
-  max-width: 300px;
-  overflow-y: auto;
-  transition: all 0.3s ease;
+  justify-content: space-between;
+  border-right: 1px solid rgba(255,255,255,0.1);
 }
 
-.dark .sidebar {
-  background: #0f172a;
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.light .sidebar {
-  background: #ffffff;
-  border-right: 1px solid #e2e8f0;
+.logo-circle {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#3ec6ff,#7c7cff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
 }
 
-.sidebar h2 {
-  margin-bottom: 25px;
-  font-weight: 800;
-  font-size: 22px;
-  letter-spacing: 0.5px;
-  background: linear-gradient(90deg, #3b82f6, #6366f1);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.subtitle {
+  font-size: 12px;
+  color: #9bbcff;
 }
 
 .sidebar button {
-  padding: 10px 14px;
+  margin-top: 20px;
+  padding: 10px;
+  border: none;
   border-radius: 8px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  margin-bottom: 25px;
-  transition: all 0.2s ease;
-}
-
-.dark .sidebar button {
-  background: #334155;
+  background: linear-gradient(90deg,#0fa3ff,#1dd1ff);
   color: white;
-  border: 1px solid #475569;
+  cursor: pointer;
 }
 
-.dark .sidebar button:hover {
-  background: #475569;
-}
-
-.light .sidebar button {
-  background: #f1f5f9;
-  color: #1e293b;
-  border: 1px solid #cbd5e1;
-}
-
-.light .sidebar button:hover {
-  background: #e2e8f0;
-}
-
-/* Usage Box */
 .usage {
-  padding: 15px;
-  border-radius: 12px;
+  margin-top: 30px;
   font-size: 14px;
+  color: #9bbcff;
 }
 
-.dark .usage {
-  background: #1e293b;
-  border: 1px solid #334155;
-}
+/* =============================
+MAIN AREA
+============================= */
 
-.light .usage {
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-}
-
-/* ================= Main ================= */
 .main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  backdrop-filter: blur(20px);
-  overflow: hidden;
-  min-height: 0; /* fixes flex scroll issue */
+  background: radial-gradient(circle at top,#132a72,#060b2c);
 }
 
-/* Chat Area */
+/* =============================
+CHAT AREA
+============================= */
+
 .chat-area {
   flex: 1;
   overflow-y: auto;
-  padding: 2rem;
-  min-height: 0; /* fixes flex scroll issue */
+  padding: 40px;
 }
 
-/* Messages */
+/* =============================
+MESSAGES
+============================= */
+
 .message-wrapper {
   display: flex;
-  align-items: flex-start;
-  gap: 12px;
   margin-bottom: 20px;
 }
 
@@ -145,184 +114,94 @@ body {
   justify-content: flex-end;
 }
 
+.message-wrapper.ai {
+  justify-content: flex-start;
+}
+
+.avatar {
+  margin-right: 10px;
+  font-size: 24px;
+}
+
 .message {
-  max-width: 75%;
+  max-width: 700px;
   padding: 16px;
-  border-radius: 14px;
-  line-height: 1.5;
-  font-size: 14px;
+  border-radius: 12px;
+  line-height: 1.6;
 }
 
-.user {
-  margin-left: auto;
+.message.bot {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
-.dark .user {
-  background: #2563eb;
+.message.user {
+  background: linear-gradient(90deg,#1dd1ff,#5f7bff);
   color: white;
-  border: 1px solid #1d4ed8;
 }
 
-.light .user {
-  background: #3b82f6;
-  color: white;
-  border: 1px solid #2563eb;
-}
+/* =============================
+CODE BLOCK
+============================= */
 
-.bot {
-  margin-right: auto;
-}
-
-.dark .bot {
-  background: #0f172a;
-  border: 1px solid #334155;
-}
-
-.light .bot {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-}
-
-/* Code block wrapper */
 .code-block {
   position: relative;
 }
 
-/* ================= Input Area ================= */
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 5px 10px;
+  font-size: 12px;
+  border: none;
+  border-radius: 6px;
+  background: #111;
+  color: white;
+  cursor: pointer;
+}
+
+/* =============================
+INPUT AREA
+============================= */
+
 .input-area {
   display: flex;
   padding: 20px;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.3);
 }
 
-.dark .input-area {
-  background: #0f172a;
-  border-top: 1px solid #334155;
-}
-
-.light .input-area {
-  background: #ffffff;
-  border-top: 1px solid #e2e8f0;
-}
-
-textarea {
+.input-area textarea {
   flex: 1;
+  height: 80px;
   resize: none;
-  padding: 14px;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  font-size: 14px;
-  outline: none;
-  transition: 0.2s ease;
-}
-
-.dark textarea {
-  background: #1e293b;
-  color: white;
-  border: 1px solid #334155;
-}
-
-.light textarea {
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-}
-
-textarea:focus {
-  border-color: #3b82f6;
-}
-
-/* Generate Button */
-.input-area button {
-  margin-left: 12px;
-  padding: 12px 18px;
-  border-radius: 12px;
+  padding: 12px;
+  border-radius: 10px;
   border: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+.input-area button {
+  margin-left: 10px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg,#00c6ff,#0072ff);
+  color: white;
   cursor: pointer;
-  font-weight: 500;
-  transition: 0.2s ease;
 }
 
-.dark .input-area button {
-  background: #3b82f6;
-  color: white;
+/* =============================
+SCROLLBAR
+============================= */
+
+.chat-area::-webkit-scrollbar {
+  width: 6px;
 }
 
-.dark .input-area button:hover {
-  background: #2563eb;
-}
-
-.light .input-area button {
-  background: #2563eb;
-  color: white;
-}
-
-.light .input-area button:hover {
-  background: #1d4ed8;
-}
-
-/* ================= Logo Section ================= */
-.logo-section {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 25px;
-}
-
-.logo-circle {
-  width: 45px;
-  height: 45px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #3b82f6, #6366f1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  color: white;
-  font-size: 14px;
-}
-
-.subtitle {
-  font-size: 12px;
-  opacity: 0.7;
-  margin-top: 2px;
-}
-
-/* Avatar */
-.avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #6366f1, #3b82f6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-}
-
-/* ================= Responsive ================= */
-@media (max-width: 1024px) {
-  .app {
-    flex-direction: column; /* stack sidebar + main vertically */
-  }
-  .sidebar {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
-    height: auto;
-  }
-  .main {
-    width: 100%;
-    flex: 1;
-  }
-}
-
-@media (max-width: 768px) {
-  .sidebar button {
-    padding: 8px 12px;
-    font-size: 13px;
-  }
-  .chat-area {
-    padding: 1rem;
-  }
+.chat-area::-webkit-scrollbar-thumb {
+  background: #5f7bff;
+  border-radius: 10px;
 }
