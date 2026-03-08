@@ -1,291 +1,149 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import "./App.css";
 
 function App() {
+  const [code, setCode] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
+  const bottomRef = useRef(null);
 
-const [chats,setChats] = useState([]);
-const [currentChat,setCurrentChat] = useState(null);
-const [input,setInput] = useState("");
-const [loading,setLoading] = useState(false);
-const [sidebarOpen,setSidebarOpen] = useState(true);
+  const wordCount = messages.reduce(
+    (acc, msg) => acc + msg.content.split(" ").length,
+    0
+  );
 
-const bottomRef = useRef(null);
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, loading]);
 
+  const handleSubmit = async () => {
+  if (!code.trim() || loading) return;
 
-/* LOAD CHATS */
-useEffect(()=>{
-const saved = localStorage.getItem("allChats");
-if(saved){
-setChats(JSON.parse(saved));
-}
-},[]);
+  const userMessage = { role: "user", content: code };
+  setMessages((prev) => [...prev, userMessage]);
+  setLoading(true);
 
+  try {
+    const response = await fetch(
+      "https://ai-bharat-5q4q.onrender.com/explain",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          code: code,
+          level: "beginner",
+          context: "simple"
+        })
+      }
+    );
 
-/* SAVE CHATS */
-useEffect(()=>{
-localStorage.setItem("allChats",JSON.stringify(chats));
-},[chats]);
+    const data = await response.json();
 
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "ai",
+        content: data.explanation || "Something went wrong."
+      }
+    ]);
+  } catch (error) {
+    console.error("Error:", error);
+    setMessages((prev) => [
+      ...prev,
+      { role: "ai", content: "Server error." }
+    ]);
+  }
 
-/* AUTO SCROLL */
-useEffect(()=>{
-bottomRef.current?.scrollIntoView({behavior:"smooth"});
-},[chats]);
-
-
-/* CREATE NEW CHAT */
-
-const newChat = ()=>{
-
-const chat = {
-id:Date.now(),
-title:"New Chat",
-messages:[]
+  setLoading(false);
+  setCode("");
 };
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text);
+  };
 
-setChats(prev=>[chat,...prev]);
-setCurrentChat(chat.id);
-
-};
-
-
-/* SELECT CHAT */
-
-const selectChat = (id)=>{
-setCurrentChat(id);
-};
-
-
-/* GET CURRENT CHAT */
-
-const chat = chats.find(c=>c.id === currentChat);
-
-
-/* SEND MESSAGE */
-
-const sendMessage = async ()=>{
-
-if(!input.trim()) return;
-
-const userMsg = {
-role:"user",
-content:input
-};
-
-const updatedChats = chats.map(c=>{
-
-if(c.id === currentChat){
-
-return {
-...c,
-messages:[...c.messages,userMsg]
-};
-
-}
-
-return c;
-
-});
-
-setChats(updatedChats);
-setInput("");
-setLoading(true);
-
-
-try{
-
-const res = await fetch(
-"https://ai-bharat-5q4q.onrender.com/explain",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({
-code:input,
-level:"beginner",
-context:"simple"
-})
-}
-);
-
-const data = await res.json();
-
-const aiMsg = {
-role:"ai",
-content:data.explanation || "Error"
-};
-
-setChats(prev =>
-prev.map(c =>
-
-c.id === currentChat
-? {...c, messages:[...c.messages,aiMsg]}
-: c
-
-));
-
-}catch{
-
-const errMsg = {
-role:"ai",
-content:"Server error"
-};
-
-setChats(prev =>
-prev.map(c =>
-
-c.id === currentChat
-? {...c, messages:[...c.messages,errMsg]}
-: c
-
-));
-
-}
-
-setLoading(false);
-
-};
-
-
-/* REGENERATE RESPONSE */
-
-const regenerate = ()=>{
-
-if(!chat || chat.messages.length === 0) return;
-
-const lastUser = [...chat.messages].reverse().find(m=>m.role==="user");
-
-if(lastUser){
-setInput(lastUser.content);
-sendMessage();
-}
-
-};
-
-
-/* EXPORT CHAT */
-
-const exportChat = ()=>{
-
-if(!chat) return;
-
-const text = chat.messages
-.map(m => `${m.role.toUpperCase()}:\n${m.content}\n`)
-.join("\n");
-
-const blob = new Blob([text],{type:"text/plain"});
-const url = URL.createObjectURL(blob);
-
-const a = document.createElement("a");
-a.href = url;
-a.download = "chat.txt";
-a.click();
-
-};
-
-
-return (
-
-<div className="app">
-
-{/* SIDEBAR */}
-
-<div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
-
-<button onClick={newChat}>
-+ New Chat
-</button>
-
-<div className="chat-history">
-
-{chats.map(c => (
-
-<div
-key={c.id}
-className="chat-item"
-onClick={()=>selectChat(c.id)}
->
-
-{c.title}
-
+  return (
+    <div className={darkMode ? "app dark" : "app light"}>
+      {/* Sidebar */}
+      <div className="sidebar">
+        <div className="logo-section">
+  <div className="logo-circle">AI</div>
+  <div>
+    <h2>CodeStory AI</h2>
+    <p className="subtitle">Your Intelligent Code Assistant</p>
+  </div>
 </div>
+        <button onClick={() => setDarkMode(!darkMode)}>
+          {darkMode ? "Light Mode" : "Dark Mode"}
+        </button>
 
+        <div className="usage">
+          <p>Total Messages: {messages.length}</p>
+          <p>Total Words: {wordCount}</p>
+        </div>
+      </div>
+
+      {/* Chat Area */}
+      <div className="main">
+        <div className="chat-area">
+          {messages.map((msg, index) => (
+  <div
+    key={index}
+    className={`message-wrapper ${msg.role}`}
+  >
+    {/* AI Avatar */}
+    {msg.role === "ai" && (
+      <div className="avatar">🤖</div>
+    )}
+
+    <div className={`message ${msg.role === "user" ? "user" : "bot"}`}>
+      {msg.role === "user" ? (
+        <div className="code-block">
+          <SyntaxHighlighter
+            language="javascript"
+            style={darkMode ? oneDark : oneLight}
+          >
+            {msg.content}
+          </SyntaxHighlighter>
+          <button
+            className="copy-btn"
+            onClick={() => copyToClipboard(msg.content)}
+          >
+            Copy
+          </button>
+        </div>
+      ) : (
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          {msg.content}
+        </ReactMarkdown>
+      )}
+    </div>
+  </div>
 ))}
+          {loading && <div className="message bot">Thinking...</div>}
+          <div ref={bottomRef}></div>
+        </div>
 
-</div>
-
-</div>
-
-
-{/* MOBILE MENU BUTTON */}
-
-<button
-className="menu-btn"
-onClick={()=>setSidebarOpen(!sidebarOpen)}
->
-☰
-</button>
-
-
-{/* CHAT AREA */}
-
-<div className="main">
-
-<div className="messages">
-
-{chat?.messages.map((m,i)=>(
-
-<div key={i} className={`msg ${m.role}`}>
-{m.content}
-</div>
-
-))}
-
-{loading && <div className="msg ai">Thinking...</div>}
-
-<div ref={bottomRef}></div>
-
-</div>
-
-
-{/* ACTION BUTTONS */}
-
-<div className="actions">
-
-<button onClick={regenerate}>
-Regenerate
-</button>
-
-<button onClick={exportChat}>
-Export Chat
-</button>
-
-</div>
-
-
-{/* INPUT */}
-
-<div className="input-bar">
-
-<textarea
-value={input}
-onChange={(e)=>setInput(e.target.value)}
-placeholder="Paste your code..."
-/>
-
-<button onClick={sendMessage}>
-Send
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-);
-
+        {/* Input Area */}
+        <div className="input-area">
+          <textarea
+            placeholder="Paste your code here..."
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          />
+          <button onClick={handleSubmit} disabled={loading}>
+            {loading ? "Generating..." : "Generate"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default App;
