@@ -1,700 +1,328 @@
-/* CodeStory AI - Complete Custom Styles */
-
-/* =================================
-   Custom Animations
-   ================================= */
-
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* ================= Global Styles ================= */
+* {
+  transition: background 0.4s ease, 
+              color 0.4s ease, 
+              border 0.4s ease;
+  box-sizing: border-box;
 }
 
-@keyframes reverse-spin {
-  from {
-    transform: rotate(360deg);
-  }
-  to {
-    transform: rotate(0deg);
-  }
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  font-family: "Inter", sans-serif;
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
+body {
+  overflow: hidden; /* prevent body scroll */
 }
 
-@keyframes twinkle {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
-}
-
-@keyframes glow-pulse {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(34, 211, 238, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(34, 211, 238, 0.6);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes bounce-in {
-  0% {
-    opacity: 0;
-    transform: scale(0.3);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-  70% {
-    transform: scale(0.9);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-/* =================================
-   Animation Classes
-   ================================= */
-
-.animate-spin-slow {
-  animation: spin-slow 8s linear infinite;
-}
-
-.animate-reverse-spin {
-  animation: reverse-spin 6s linear infinite;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-twinkle {
-  animation: twinkle 2s ease-in-out infinite;
-}
-
-.animate-glow-pulse {
-  animation: glow-pulse 2s ease-in-out infinite;
-}
-
-.animate-shimmer {
-  animation: shimmer 2s linear infinite;
-}
-
-.animate-fade-in {
-  animation: fade-in 0.5s ease-out;
-}
-
-.animate-slide-in-right {
-  animation: slide-in-right 0.5s ease-out;
-}
-
-.animate-slide-in-left {
-  animation: slide-in-left 0.5s ease-out;
-}
-
-.animate-bounce-in {
-  animation: bounce-in 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-/* =================================
-   Animation Delays
-   ================================= */
-
-.delay-0 {
-  animation-delay: 0ms;
-}
-
-.delay-100 {
-  animation-delay: 100ms;
-}
-
-.delay-200 {
-  animation-delay: 200ms;
-}
-
-.delay-300 {
-  animation-delay: 300ms;
-}
-
-.delay-500 {
-  animation-delay: 500ms;
-}
-
-.delay-700 {
-  animation-delay: 700ms;
-}
-
-.delay-1000 {
-  animation-delay: 1000ms;
-}
-
-/* =================================
-   Theme-Specific Styles
-   ================================= */
-
-/* Classic Theme - Book Texture */
-.book-texture {
-  background-image: 
-    linear-gradient(90deg, rgba(0,0,0,.03) 1px, transparent 1px),
-    linear-gradient(rgba(0,0,0,.03) 1px, transparent 1px);
-  background-size: 20px 20px;
-}
-
-.book-spine-shadow {
-  box-shadow: 
-    inset -5px 0 10px -5px rgba(0, 0, 0, 0.2),
-    inset 5px 0 10px -5px rgba(255, 255, 255, 0.3);
-}
-
-/* Dark Fantasy Theme - Mystical Glow */
-.mystical-glow {
-  position: relative;
-}
-
-.mystical-glow::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  padding: 2px;
-  background: linear-gradient(45deg, #a855f7, #ec4899, #8b5cf6);
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.mystical-glow:hover::before {
-  opacity: 1;
-}
-
-/* Fairy Theme - Sparkle Effect */
-.sparkle-hover {
-  position: relative;
+/* ================= App Container ================= */
+.app {
+  display: flex;
+  height: calc(var(--vh, 1vh) * 100); /* true fullscreen for mobile */
+  width: 100vw;
   overflow: hidden;
+  transition: all 0.4s ease;
+  background-attachment: fixed;
 }
 
-.sparkle-hover::after {
-  content: '✨';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  font-size: 2rem;
-  opacity: 0;
-  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+/* ================= Dark / Light Mode ================= */
+.dark {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #1e1b4b 100%);
+  color: #f1f5f9;
 }
 
-.sparkle-hover:hover::after {
-  transform: translate(-50%, -50%) scale(1);
-  opacity: 1;
+.light {
+  background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f1f5f9 100%);
+  color: #1e293b;
 }
 
-/* Cosmic Theme - Star Field */
-.star-field {
-  background-image: 
-    radial-gradient(1px 1px at 20% 30%, white, transparent),
-    radial-gradient(1px 1px at 60% 70%, #22d3ee, transparent),
-    radial-gradient(1px 1px at 50% 50%, #3b82f6, transparent),
-    radial-gradient(1px 1px at 80% 10%, white, transparent),
-    radial-gradient(1px 1px at 90% 60%, #6366f1, transparent);
-  background-size: 200% 200%;
-  background-position: 0% 0%;
-  animation: star-field-move 60s linear infinite;
+/* ================= Sidebar ================= */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 30px;
+  min-width: 250px;
+  max-width: 300px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
 }
 
-@keyframes star-field-move {
-  0% {
-    background-position: 0% 0%;
-  }
-  100% {
-    background-position: 100% 100%;
-  }
+.dark .sidebar {
+  background: #0f172a;
 }
 
-.nebula-glow {
-  background: radial-gradient(
-    ellipse at center,
-    rgba(34, 211, 238, 0.15) 0%,
-    rgba(59, 130, 246, 0.1) 35%,
-    rgba(99, 102, 241, 0.05) 70%,
-    transparent 100%
-  );
-  animation: nebula-pulse 8s ease-in-out infinite;
+.light .sidebar {
+  background: #ffffff;
+  border-right: 1px solid #e2e8f0;
 }
 
-@keyframes nebula-pulse {
-  0%, 100% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.1);
-  }
-}
-
-/* =================================
-   Scrollbar Styling
-   ================================= */
-
-/* Classic Theme Scrollbar */
-.scrollbar-classic::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.scrollbar-classic::-webkit-scrollbar-track {
-  background: rgba(251, 191, 36, 0.1);
-  border-radius: 4px;
-}
-
-.scrollbar-classic::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #d97706, #ea580c);
-  border-radius: 4px;
-}
-
-.scrollbar-classic::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #b45309, #c2410c);
-}
-
-/* Dark Fantasy Scrollbar */
-.scrollbar-dark::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.scrollbar-dark::-webkit-scrollbar-track {
-  background: rgba(168, 85, 247, 0.1);
-  border-radius: 4px;
-}
-
-.scrollbar-dark::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #a855f7, #ec4899);
-  border-radius: 4px;
-}
-
-.scrollbar-dark::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #9333ea, #db2777);
-}
-
-/* Fairy Theme Scrollbar */
-.scrollbar-fairy::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.scrollbar-fairy::-webkit-scrollbar-track {
-  background: rgba(236, 72, 153, 0.1);
-  border-radius: 4px;
-}
-
-.scrollbar-fairy::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #ec4899, #a855f7, #3b82f6);
-  border-radius: 4px;
-}
-
-.scrollbar-fairy::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #db2777, #9333ea, #2563eb);
-}
-
-/* Cosmic Theme Scrollbar */
-.scrollbar-cosmic::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-.scrollbar-cosmic::-webkit-scrollbar-track {
-  background: rgba(34, 211, 238, 0.1);
-  border-radius: 4px;
-}
-
-.scrollbar-cosmic::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #22d3ee, #3b82f6);
-  border-radius: 4px;
-}
-
-.scrollbar-cosmic::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #06b6d4, #2563eb);
-}
-
-/* =================================
-   Text Effects
-   ================================= */
-
-.text-gradient-classic {
-  background: linear-gradient(135deg, #d97706, #ea580c, #d97706);
-  background-size: 200% 200%;
+.sidebar h2 {
+  margin-bottom: 25px;
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg, #3b82f6, #6366f1);
   -webkit-background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradient-shift 3s ease infinite;
 }
 
-.text-gradient-dark {
-  background: linear-gradient(135deg, #a855f7, #ec4899, #8b5cf6);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradient-shift 3s ease infinite;
+.sidebar button {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  margin-bottom: 25px;
+  transition: all 0.2s ease;
 }
 
-.text-gradient-fairy {
-  background: linear-gradient(135deg, #ec4899, #a855f7, #3b82f6, #ec4899);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradient-shift 4s ease infinite;
+.dark .sidebar button {
+  background: #334155;
+  color: white;
+  border: 1px solid #475569;
 }
 
-.text-gradient-cosmic {
-  background: linear-gradient(135deg, #22d3ee, #3b82f6, #6366f1, #22d3ee);
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradient-shift 4s ease infinite;
+.dark .sidebar button:hover {
+  background: #475569;
 }
 
-@keyframes gradient-shift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+.light .sidebar button {
+  background: #f1f5f9;
+  color: #1e293b;
+  border: 1px solid #cbd5e1;
 }
 
-/* =================================
-   Glassmorphism Effects
-   ================================= */
+.light .sidebar button:hover {
+  background: #e2e8f0;
+}
 
-.glass-classic {
-  background: rgba(255, 251, 235, 0.7);
+/* Usage Box */
+.usage {
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+
+.dark .usage {
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
+.light .usage {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+/* ================= Main ================= */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(20px);
+  overflow: hidden;
+  min-height: 0; /* fixes flex scroll issue */
+}
+
+/* Chat Area */
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+  min-height: 0; /* fixes flex scroll issue */
+}
+
+/* Messages */
+.message-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.message-wrapper.user {
+  justify-content: flex-end;
+}
+
+.message {
+  max-width: 75%;
+  padding: 16px;
+  border-radius: 14px;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.user {
+  margin-left: auto;
+}
+
+.dark .user {
+  background: #2563eb;
+  color: white;
+  border: 1px solid #1d4ed8;
+}
+
+.light .user {
+  background: #3b82f6;
+  color: white;
+  border: 1px solid #2563eb;
+}
+
+.bot {
+  margin-right: auto;
+}
+
+.dark .bot {
+  background: #0f172a;
+  border: 1px solid #334155;
+}
+
+.light .bot {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+}
+
+/* Code block wrapper */
+.code-block {
+  position: relative;
+}
+
+/* ================= Input Area ================= */
+.input-area {
+  display: flex;
+  padding: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(217, 119, 6, 0.2);
 }
 
-.glass-dark {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(168, 85, 247, 0.2);
+.dark .input-area {
+  background: #0f172a;
+  border-top: 1px solid #334155;
 }
 
-.glass-fairy {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(236, 72, 153, 0.3);
+.light .input-area {
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
 }
 
-.glass-cosmic {
-  background: rgba(15, 23, 42, 0.7);
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border: 1px solid rgba(34, 211, 238, 0.3);
+textarea {
+  flex: 1;
+  resize: none;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s ease;
 }
 
-/* =================================
-   Shadow Effects
-   ================================= */
-
-.shadow-classic {
-  box-shadow: 
-    0 4px 6px -1px rgba(217, 119, 6, 0.1),
-    0 2px 4px -1px rgba(217, 119, 6, 0.06);
+.dark textarea {
+  background: #1e293b;
+  color: white;
+  border: 1px solid #334155;
 }
 
-.shadow-classic-lg {
-  box-shadow: 
-    0 10px 15px -3px rgba(217, 119, 6, 0.15),
-    0 4px 6px -2px rgba(217, 119, 6, 0.1);
+.light textarea {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
 }
 
-.shadow-dark {
-  box-shadow: 
-    0 4px 6px -1px rgba(168, 85, 247, 0.2),
-    0 2px 4px -1px rgba(168, 85, 247, 0.1);
+textarea:focus {
+  border-color: #3b82f6;
 }
 
-.shadow-dark-lg {
-  box-shadow: 
-    0 10px 15px -3px rgba(168, 85, 247, 0.3),
-    0 4px 6px -2px rgba(168, 85, 247, 0.2);
+/* Generate Button */
+.input-area button {
+  margin-left: 12px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s ease;
 }
 
-.shadow-fairy {
-  box-shadow: 
-    0 4px 6px -1px rgba(236, 72, 153, 0.15),
-    0 2px 4px -1px rgba(168, 85, 247, 0.1);
+.dark .input-area button {
+  background: #3b82f6;
+  color: white;
 }
 
-.shadow-fairy-lg {
-  box-shadow: 
-    0 10px 15px -3px rgba(236, 72, 153, 0.25),
-    0 4px 6px -2px rgba(168, 85, 247, 0.15);
+.dark .input-area button:hover {
+  background: #2563eb;
 }
 
-.shadow-cosmic {
-  box-shadow: 
-    0 4px 6px -1px rgba(34, 211, 238, 0.2),
-    0 2px 4px -1px rgba(59, 130, 246, 0.15);
+.light .input-area button {
+  background: #2563eb;
+  color: white;
 }
 
-.shadow-cosmic-lg {
-  box-shadow: 
-    0 10px 15px -3px rgba(34, 211, 238, 0.3),
-    0 4px 6px -2px rgba(59, 130, 246, 0.2),
-    0 0 40px rgba(34, 211, 238, 0.15);
+.light .input-area button:hover {
+  background: #1d4ed8;
 }
 
-/* =================================
-   Button Hover Effects
-   ================================= */
-
-.btn-classic-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* ================= Logo Section ================= */
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
 }
 
-.btn-classic-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 20px 25px -5px rgba(217, 119, 6, 0.2),
-    0 10px 10px -5px rgba(217, 119, 6, 0.1);
-}
-
-.btn-classic-hover:active {
-  transform: translateY(0);
-}
-
-.btn-dark-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.btn-dark-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 20px 25px -5px rgba(168, 85, 247, 0.3),
-    0 10px 10px -5px rgba(168, 85, 247, 0.2);
-}
-
-.btn-dark-hover:active {
-  transform: translateY(0);
-}
-
-.btn-fairy-hover {
-  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.btn-fairy-hover:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 
-    0 20px 25px -5px rgba(236, 72, 153, 0.3),
-    0 10px 10px -5px rgba(168, 85, 247, 0.2);
-}
-
-.btn-fairy-hover:active {
-  transform: translateY(0) scale(1);
-}
-
-.btn-cosmic-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.btn-cosmic-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 20px 25px -5px rgba(34, 211, 238, 0.4),
-    0 10px 10px -5px rgba(59, 130, 246, 0.3),
-    0 0 60px rgba(34, 211, 238, 0.2);
-}
-
-.btn-cosmic-hover:active {
-  transform: translateY(0);
-}
-
-/* =================================
-   Message Bubble Effects
-   ================================= */
-
-.message-bubble-classic {
-  position: relative;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  background: linear-gradient(135deg, rgba(255, 251, 235, 0.8), rgba(254, 243, 199, 0.8));
-  border: 2px solid rgba(217, 119, 6, 0.3);
-}
-
-.message-bubble-dark {
-  position: relative;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  background: linear-gradient(135deg, rgba(30, 27, 75, 0.6), rgba(15, 23, 42, 0.6));
-  border: 1px solid rgba(168, 85, 247, 0.3);
-}
-
-.message-bubble-fairy {
-  position: relative;
-  padding: 1rem;
-  border-radius: 1.5rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(254, 242, 242, 0.9));
-  border: 3px solid rgba(236, 72, 153, 0.3);
-}
-
-.message-bubble-cosmic {
-  position: relative;
-  padding: 1rem;
-  border-radius: 0.75rem;
-  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.7));
-  border: 1px solid rgba(34, 211, 238, 0.3);
-}
-
-/* =================================
-   Loading Indicators
-   ================================= */
-
-.dots-classic {
-  display: inline-flex;
-  gap: 0.5rem;
-}
-
-.dots-classic span {
-  width: 0.5rem;
-  height: 0.5rem;
-  background: #d97706;
+.logo-circle {
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
-  animation: bounce 1.4s ease-in-out infinite;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+  font-size: 14px;
 }
 
-.dots-classic span:nth-child(1) {
-  animation-delay: -0.32s;
+.subtitle {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 2px;
 }
 
-.dots-classic span:nth-child(2) {
-  animation-delay: -0.16s;
+/* Avatar */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #3b82f6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
 }
 
-/* =================================
-   Responsive Utilities
-   ================================= */
+/* ================= Responsive ================= */
+@media (max-width: 1024px) {
+  .app {
+    flex-direction: column; /* stack sidebar + main vertically */
+  }
+  .sidebar {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+  }
+  .main {
+    width: 100%;
+    flex: 1;
+  }
+}
 
 @media (max-width: 768px) {
-  .hide-mobile {
-    display: none !important;
+  .sidebar button {
+    padding: 8px 12px;
+    font-size: 13px;
   }
-  
-  .show-mobile {
-    display: block !important;
-  }
-}
-
-@media (min-width: 769px) {
-  .hide-desktop {
-    display: none !important;
-  }
-  
-  .show-desktop {
-    display: block !important;
-  }
-}
-
-/* =================================
-   Accessibility
-   ================================= */
-
-.focus-visible-classic:focus-visible {
-  outline: 2px solid #d97706;
-  outline-offset: 2px;
-}
-
-.focus-visible-dark:focus-visible {
-  outline: 2px solid #a855f7;
-  outline-offset: 2px;
-}
-
-.focus-visible-fairy:focus-visible {
-  outline: 2px solid #ec4899;
-  outline-offset: 2px;
-}
-
-.focus-visible-cosmic:focus-visible {
-  outline: 2px solid #22d3ee;
-  outline-offset: 2px;
-}
-
-/* =================================
-   Print Styles
-   ================================= */
-
-@media print {
-  .no-print {
-    display: none !important;
-  }
-  
-  .page-break {
-    page-break-after: always;
+  .chat-area {
+    padding: 1rem;
   }
 }
